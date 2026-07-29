@@ -9,12 +9,23 @@
     <script src="https://quge5.com/88/tag.min.js" data-zone="264549" async data-cfasync="false"></script>
     <title>BCZ HITTER — API Stress Tool</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Fira+Code:wght@400;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Fira+Code:wght@400;600;700&display=swap');
+
+        :root {
+            /* dynamic theme colors */
+            --theme-color: #00ff88;
+            --theme-glow: rgba(0, 255, 136, 0.4);
+            --theme-border: #00ff88;
+            --theme-bg: rgba(0, 25, 12, 0.9);
+            --text-bright: #ffffff;
+            --text-sub: #b3ffe0;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; transition: color 0.8s ease, border-color 0.8s ease, box-shadow 0.8s ease, background 0.8s ease; }
 
         body {
-            background: #0a0a0f;
-            color: #00ff88;
+            background: #050508;
+            color: var(--theme-color);
             font-family: 'Fira Code', monospace;
             min-height: 100vh;
             overflow-x: hidden;
@@ -24,39 +35,39 @@
             content: '';
             position: fixed; top: 0; left: 0;
             width: 100%; height: 100%;
-            background: repeating-linear-gradient(0deg, rgba(0,255,136,0.025) 0px, rgba(0,255,136,0.025) 2px, transparent 2px, transparent 4px);
+            background: repeating-linear-gradient(0deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 2px, transparent 2px, transparent 4px);
             pointer-events: none; z-index: 9999;
         }
 
         #binary-bg {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 0; opacity: 0.04; pointer-events: none;
-            font-size: 13px; line-height: 1; color: #00ff88; overflow: hidden;
+            z-index: 0; opacity: 0.08; pointer-events: none;
+            font-size: 13px; line-height: 1; color: var(--theme-color); overflow: hidden;
             font-family: 'Fira Code', monospace; word-break: break-all;
         }
 
-        .container { position: relative; z-index: 1; max-width: 520px; margin: 0 auto; padding: 20px; }
+        .container { position: relative; z-index: 1; max-width: 540px; margin: 0 auto; padding: 20px; }
 
         /* ===== HEADER ===== */
         .header {
             text-align: center; padding: 25px 0 16px;
-            border-bottom: 2px solid #00ff44; margin-bottom: 22px;
+            border-bottom: 2px solid var(--theme-border); margin-bottom: 22px;
             position: relative;
         }
 
         .header::after {
             content: '';
             position: absolute; bottom: -2px; left: 0; width: 100%; height: 2px;
-            background: linear-gradient(90deg, transparent, #00ff88, #00ff44, #00ff88, transparent);
+            background: linear-gradient(90deg, transparent, var(--theme-color), var(--theme-border), var(--theme-color), transparent);
             animation: glow-sweep 3s ease-in-out infinite;
         }
 
         @keyframes glow-sweep { 0%,100%{opacity:0.4;} 50%{opacity:1;} }
 
         .glitch {
-            font-family: 'Orbitron', monospace; font-size: 2.5rem; font-weight: 900;
-            color: #00ff88;
-            text-shadow: 0 0 10px rgba(0,255,136,0.8), 0 0 20px rgba(0,255,136,0.4), 0 0 40px rgba(0,255,136,0.2), -2px 0 #ff0080, 2px 0 #00ccff;
+            font-family: 'Orbitron', monospace; font-size: 2.6rem; font-weight: 900;
+            color: var(--theme-color);
+            text-shadow: 0 0 12px var(--theme-glow), -2px 0 #ff0080, 2px 0 #00ccff;
             animation: glitch 3s infinite; letter-spacing: 4px;
         }
 
@@ -68,128 +79,129 @@
             98%{transform:translate(1px,1px);}
         }
 
-        .glitch .hl { color: #ff0044; }
-        .subtitle { color: #008844; font-size: 0.7rem; letter-spacing: 5px; text-transform: uppercase; margin-top: 5px; font-family: 'Orbitron', monospace; }
-        .subtitle .sp { color: #004422; margin: 0 6px; }
+        .glitch .hl { color: #ff0055; text-shadow: 0 0 10px rgba(255, 0, 85, 0.8); }
+        .subtitle { color: var(--text-sub); font-size: 0.75rem; font-weight: 700; letter-spacing: 5px; text-transform: uppercase; margin-top: 6px; font-family: 'Orbitron', monospace; }
+        .subtitle .sp { color: var(--theme-color); margin: 0 6px; }
 
-        .status-row { display: flex; align-items: center; justify-content: center; gap: 14px; margin-top: 8px; flex-wrap: wrap; }
+        .status-row { display: flex; align-items: center; justify-content: center; gap: 14px; margin-top: 10px; flex-wrap: wrap; }
 
         .badge {
             display: inline-flex; align-items: center; gap: 6px;
-            background: #001a0a; border: 1px solid #00ff44; padding: 3px 14px;
-            border-radius: 20px; font-size: 0.65rem; color: #00ff88;
+            background: rgba(0,0,0,0.6); border: 1.5px solid var(--theme-border); padding: 4px 14px;
+            border-radius: 20px; font-size: 0.75rem; color: #ffffff; font-weight: 700;
         }
 
-        .badge .dot { width: 7px; height: 7px; border-radius: 50%; background: #00ff44; display: inline-block; animation: blink 1.5s infinite; }
+        .badge .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--theme-color); display: inline-block; animation: blink 1.5s infinite; }
         @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0.2;} }
 
-        .brand-tag { font-size: 0.55rem; color: #005533; font-family: 'Orbitron', monospace; letter-spacing: 2px; border: 1px solid #002211; padding: 2px 10px; border-radius: 10px; }
-        .brand-tag a { color: #00aa66; text-decoration: none; }
-        .brand-tag a:hover { color: #00ff88; }
+        .brand-tag { font-size: 0.7rem; color: #ffffff; font-family: 'Orbitron', monospace; font-weight: 700; letter-spacing: 2px; border: 1.5px solid var(--theme-border); padding: 3px 12px; border-radius: 10px; background: rgba(0,0,0,0.5); }
+        .brand-tag a { color: var(--text-sub); text-decoration: none; }
+        .brand-tag a:hover { color: #ffffff; text-shadow: 0 0 8px var(--theme-color); }
 
         /* ===== MAIN BOX ===== */
         .main-box {
-            background: rgba(0,20,10,0.88); border: 1px solid #003322;
-            border-radius: 8px; padding: 28px 22px;
-            backdrop-filter: blur(8px); box-shadow: 0 0 30px rgba(0,255,136,0.04);
+            background: var(--theme-bg); border: 1.5px solid var(--theme-border);
+            border-radius: 10px; padding: 28px 22px;
+            backdrop-filter: blur(10px); box-shadow: 0 0 25px var(--theme-glow);
         }
 
         .section-title {
-            font-family: 'Orbitron', monospace; font-size: 0.75rem; color: #00aa66;
-            text-transform: uppercase; letter-spacing: 3px; margin-bottom: 16px;
-            border-bottom: 1px solid #003322; padding-bottom: 8px;
-            text-align: center;
+            font-family: 'Orbitron', monospace; font-size: 0.85rem; font-weight: 700; color: #ffffff;
+            text-transform: uppercase; letter-spacing: 3px; margin-bottom: 18px;
+            border-bottom: 1px solid var(--theme-border); padding-bottom: 8px;
+            text-align: center; text-shadow: 0 0 8px var(--theme-glow);
         }
 
         /* ===== PHONE INPUT ===== */
         .input-wrap { margin-bottom: 18px; }
-        .input-wrap label { display: block; font-size: 0.65rem; color: #00aa66; margin-bottom: 5px; letter-spacing: 2px; text-transform: uppercase; }
+        .input-wrap label { display: block; font-size: 0.75rem; font-weight: 700; color: var(--text-sub); margin-bottom: 6px; letter-spacing: 2px; text-transform: uppercase; }
         .input-wrap input {
-            width: 100%; padding: 13px 16px; background: #0a0a0f; border: 1px solid #003322;
-            border-radius: 6px; color: #00ff88; font-family: 'Fira Code', monospace;
-            font-size: 1.05rem; outline: none; transition: all 0.3s; text-align: center;
+            width: 100%; padding: 14px 16px; background: #000000; border: 1.5px solid var(--theme-border);
+            border-radius: 6px; color: #ffffff; font-family: 'Fira Code', monospace;
+            font-size: 1.15rem; font-weight: 700; outline: none; text-align: center;
         }
-        .input-wrap input:focus { border-color: #00ff88; box-shadow: 0 0 15px rgba(0,255,136,0.12); }
-        .input-wrap input::placeholder { color: #004422; }
+        .input-wrap input:focus { border-color: #ffffff; box-shadow: 0 0 15px var(--theme-glow); }
+        .input-wrap input::placeholder { color: #666; font-weight: 400; }
 
         /* ===== BURST BUTTONS ===== */
-        .burst-label { font-size: 0.65rem; color: #00aa66; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; text-align: center; }
+        .burst-label { font-size: 0.75rem; font-weight: 700; color: var(--text-sub); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; text-align: center; }
 
-        .burst-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 16px; }
+        .burst-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 18px; }
 
         .burst-btn {
-            padding: 18px 8px; background: transparent; border: 1px solid #003322;
-            border-radius: 6px; color: #00ff88; font-family: 'Orbitron', monospace;
-            font-size: 1.5rem; font-weight: 700; cursor: pointer; transition: all 0.3s;
+            padding: 16px 8px; background: rgba(0,0,0,0.6); border: 1.5px solid var(--theme-border);
+            border-radius: 6px; color: #ffffff; font-family: 'Orbitron', monospace;
+            font-size: 1.6rem; font-weight: 900; cursor: pointer; text-shadow: 0 0 8px var(--theme-glow);
             text-align: center;
         }
 
-        .burst-btn .sub { display: block; font-size: 0.48rem; color: #006633; font-family: 'Fira Code', monospace; margin-top: 3px; letter-spacing: 1px; }
-        .burst-btn:hover { border-color: #00ff44; box-shadow: 0 0 20px rgba(0,255,136,0.1); background: rgba(0,255,136,0.02); }
+        .burst-btn .sub { display: block; font-size: 0.55rem; font-weight: 700; color: var(--text-sub); font-family: 'Fira Code', monospace; margin-top: 4px; letter-spacing: 1px; }
+        .burst-btn:hover { border-color: #ffffff; box-shadow: 0 0 20px var(--theme-glow); background: var(--theme-glow); color: #000; }
+        .burst-btn:hover .sub { color: #000; }
         .burst-btn:active { transform: scale(0.96); }
-        .burst-btn:disabled { opacity: 0.15; cursor: not-allowed; transform: none !important; }
+        .burst-btn:disabled { opacity: 0.2; cursor: not-allowed; transform: none !important; }
         .burst-btn.busy { border-color: #ff0044; color: #ff0044; animation: pulse-btn 1s infinite; }
-        @keyframes pulse-btn { 0%,100%{box-shadow:0 0 5px rgba(255,0,68,0.2);} 50%{box-shadow:0 0 20px rgba(255,0,68,0.5);} }
+        @keyframes pulse-btn { 0%,100%{box-shadow:0 0 5px rgba(255,0,68,0.5);} 50%{box-shadow:0 0 25px rgba(255,0,68,0.9);} }
 
         /* ===== HIT COUNTER ===== */
         .counter-box {
-            background: rgba(0,10,5,0.7); border: 1px solid #003322;
-            border-radius: 8px; padding: 18px; margin-bottom: 16px;
+            background: rgba(0,0,0,0.7); border: 1.5px solid var(--theme-border);
+            border-radius: 8px; padding: 18px; margin-bottom: 18px;
             text-align: center;
         }
 
         .counter-label {
-            font-size: 0.55rem; color: #005533; letter-spacing: 3px; text-transform: uppercase;
+            font-size: 0.75rem; font-weight: 700; color: var(--text-sub); letter-spacing: 3px; text-transform: uppercase;
         }
 
         .counter-value {
-            font-family: 'Orbitron', monospace; font-size: 3rem; font-weight: 900;
-            color: #00ff88; text-shadow: 0 0 20px rgba(0,255,136,0.3);
-            margin: 6px 0;
+            font-family: 'Orbitron', monospace; font-size: 3.2rem; font-weight: 900;
+            color: #ffffff; text-shadow: 0 0 20px var(--theme-glow);
+            margin: 4px 0;
         }
 
         .counter-sub {
-            font-size: 0.5rem; color: #004422; letter-spacing: 2px;
+            font-size: 0.7rem; font-weight: 600; color: var(--text-sub); letter-spacing: 2px;
         }
 
         /* ===== PROGRESS ===== */
-        .progress-box { margin-bottom: 16px; }
-        .progress-bar-bg { width: 100%; height: 14px; background: #001a0a; border: 1px solid #003322; border-radius: 7px; overflow: hidden; }
-        .progress-bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #003322, #00ff88); border-radius: 7px; transition: width 0.3s; }
-        .progress-text { text-align: center; font-size: 0.55rem; color: #008844; margin-top: 3px; }
+        .progress-box { margin-bottom: 18px; }
+        .progress-bar-bg { width: 100%; height: 16px; background: #000000; border: 1.5px solid var(--theme-border); border-radius: 8px; overflow: hidden; }
+        .progress-bar-fill { height: 100%; width: 0%; background: var(--theme-color); border-radius: 8px; transition: width 0.3s; box-shadow: 0 0 10px var(--theme-glow); }
+        .progress-text { text-align: center; font-size: 0.65rem; font-weight: 700; color: #ffffff; margin-top: 5px; }
 
         /* ===== ABORT ===== */
         .abort-btn {
-            width: 100%; padding: 13px; background: transparent; border: 2px solid #ff0044;
+            width: 100%; padding: 14px; background: rgba(0,0,0,0.6); border: 2px solid #ff0044;
             border-radius: 6px; color: #ff0044; font-family: 'Orbitron', monospace;
-            font-size: 0.75rem; font-weight: 700; letter-spacing: 4px; text-transform: uppercase;
-            cursor: pointer; transition: all 0.3s;
+            font-size: 0.85rem; font-weight: 900; letter-spacing: 4px; text-transform: uppercase;
+            cursor: pointer; text-shadow: 0 0 8px rgba(255,0,68,0.6);
         }
-        .abort-btn:hover { background: rgba(255,0,68,0.08); box-shadow: 0 0 20px rgba(255,0,68,0.15); }
+        .abort-btn:hover { background: rgba(255,0,68,0.2); box-shadow: 0 0 20px rgba(255,0,68,0.4); color: #fff; }
         .abort-btn:disabled { opacity: 0.2; cursor: not-allowed; }
 
         /* ===== CREDIT ===== */
         .credit-strip {
-            margin-top: 18px; padding-top: 12px; border-top: 1px solid #002211;
+            margin-top: 20px; padding-top: 14px; border-top: 1px solid var(--theme-border);
             display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap;
         }
 
-        .credit-item { font-size: 0.55rem; color: #004422; letter-spacing: 2px; font-family: 'Orbitron', monospace; }
-        .credit-item a { color: #00aa66; text-decoration: none; }
-        .credit-item a:hover { color: #00ff88; }
-        .credit-item .ac { color: #006633; }
+        .credit-item { font-size: 0.65rem; font-weight: 700; color: #ffffff; letter-spacing: 2px; font-family: 'Orbitron', monospace; }
+        .credit-item a { color: var(--text-sub); text-decoration: none; }
+        .credit-item a:hover { color: #ffffff; }
+        .credit-item .ac { color: var(--theme-color); }
 
         /* ===== FOOTER ===== */
-        .footer { text-align: center; margin-top: 25px; padding: 16px; border-top: 1px solid #002211; }
-        .footer-b { font-family: 'Orbitron', monospace; font-size: 0.85rem; color: #00ff88; letter-spacing: 3px; margin-bottom: 4px; }
+        .footer { text-align: center; margin-top: 25px; padding: 16px; border-top: 1px solid var(--theme-border); }
+        .footer-b { font-family: 'Orbitron', monospace; font-size: 0.9rem; font-weight: 700; color: #ffffff; letter-spacing: 3px; margin-bottom: 6px; }
         .footer-b .r { color: #ff0044; }
-        .footer-l { font-size: 0.5rem; color: #004422; margin-top: 4px; }
-        .footer-l a { color: #00aa66; text-decoration: none; }
-        .footer-l a:hover { color: #00ff88; }
-        .footer-l .sep { color: #002211; margin: 0 6px; }
+        .footer-l { font-size: 0.6rem; font-weight: 700; color: var(--text-sub); margin-top: 4px; }
+        .footer-l a { color: #ffffff; text-decoration: none; }
+        .footer-l a:hover { color: var(--theme-color); }
+        .footer-l .sep { color: var(--theme-border); margin: 0 6px; }
 
-        .wm { position: fixed; bottom: 10px; right: 15px; font-size: 0.45rem; color: #001a0a; z-index: 1; font-family: 'Orbitron', monospace; letter-spacing: 2px; pointer-events: none; opacity: 0.5; }
-        .wm2 { position: fixed; bottom: 10px; left: 15px; font-size: 0.4rem; color: #001508; z-index: 1; font-family: 'Fira Code', monospace; pointer-events: none; opacity: 0.3; }
+        .wm { position: fixed; bottom: 10px; right: 15px; font-size: 0.55rem; font-weight: 700; color: var(--text-sub); z-index: 1; font-family: 'Orbitron', monospace; letter-spacing: 2px; pointer-events: none; opacity: 0.7; }
+        .wm2 { position: fixed; bottom: 10px; left: 15px; font-size: 0.5rem; font-weight: 700; color: var(--text-sub); z-index: 1; font-family: 'Fira Code', monospace; pointer-events: none; opacity: 0.7; }
     </style>
 </head>
 <body>
@@ -263,7 +275,7 @@
 
     <!-- FOOTER -->
     <footer class="footer">
-        <div class="footer-b"><span class="r">BCZ</span> TEAM <span style="color:#004422;">◆</span> SECURITY RESEARCH</div>
+        <div class="footer-b"><span class="r">BCZ</span> TEAM <span style="color:var(--theme-color);">◆</span> SECURITY RESEARCH</div>
         <div class="footer-l">
             <a href="https://t.me/hacxo" target="_blank">TELEGRAM: @hacxo</a>
             <span class="sep">|</span> MASTER API GATEWAY <span class="sep">|</span> 25 INTEGRATED
@@ -274,12 +286,39 @@
 
 <script>
     // ================================================================
+    // Dynamic Theme Color Changer (Every 2 Seconds)
+    // ================================================================
+    const themes = [
+        { color: '#00ff88', glow: 'rgba(0, 255, 136, 0.4)', border: '#00ff88', bg: 'rgba(0, 25, 12, 0.9)', sub: '#b3ffe0' }, // Neon Green
+        { color: '#00e5ff', glow: 'rgba(0, 229, 255, 0.4)', border: '#00e5ff', bg: 'rgba(0, 20, 30, 0.9)', sub: '#b3f5ff' }, // Electric Cyan
+        { color: '#ff00d4', glow: 'rgba(255, 0, 212, 0.4)', border: '#ff00d4', bg: 'rgba(30, 0, 25, 0.9)', sub: '#ffb3f3' }, // Neon Purple/Pink
+        { color: '#ffea00', glow: 'rgba(255, 234, 0, 0.4)', border: '#ffea00', bg: 'rgba(30, 28, 0, 0.9)', sub: '#fffab3' },  // Cyber Gold
+        { color: '#ff3300', glow: 'rgba(255, 51, 0, 0.4)', border: '#ff3300', bg: 'rgba(30, 5, 0, 0.9)', sub: '#ffc2b3' }    // Crimson Orange
+    ];
+
+    let currentThemeIdx = 0;
+
+    function changeTheme() {
+        currentThemeIdx = (currentThemeIdx + 1) % themes.length;
+        const t = themes[currentThemeIdx];
+        const root = document.documentElement;
+        
+        root.style.setProperty('--theme-color', t.color);
+        root.style.setProperty('--theme-glow', t.glow);
+        root.style.setProperty('--theme-border', t.border);
+        root.style.setProperty('--theme-bg', t.bg);
+        root.style.setProperty('--text-sub', t.sub);
+    }
+
+    // Change UI color every 2000ms (2 seconds)
+    setInterval(changeTheme, 2000);
+
+    // ================================================================
     // BCZ HITTER — API Stress Test Tool
     // Authorized pentesting use only
-    // Shows ONLY hit count. Clean & minimal.
     // ================================================================
 
-    const API_BASE = 'https://masterapi-sable.vercel.app/send?phone=';
+    const API_BASE = 'https://example.com/send?phone=';
 
     let isBusy = false;
     let killFlag = false;
@@ -330,9 +369,9 @@
             statusDot.style.background = '#ff0044';
         } else {
             statusText.textContent = 'STANDBY';
-            statusBadge.style.borderColor = '#00ff44';
-            statusBadge.style.color = '#00ff88';
-            statusDot.style.background = '#00ff44';
+            statusBadge.style.borderColor = 'var(--theme-border)';
+            statusBadge.style.color = '#ffffff';
+            statusDot.style.background = 'var(--theme-color)';
         }
     }
 
