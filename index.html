@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-     <meta name="monetag" content="0c3a37c8c1bdaf8cc2fd3faa78b97e2d">
+    <meta name="monetag" content="0c3a37c8c1bdaf8cc2fd3faa78b97e2d">
     <script src="https://5gvci.com/act/files/tag.min.js?z=11438783" data-cfasync="false" async></script>
     <script>(function(s){s.dataset.zone='11438777',s.src='https://al5sm.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
     <script src="https://quge5.com/88/tag.min.js" data-zone="264549" async data-cfasync="false"></script>
@@ -202,6 +202,51 @@
 
         .wm { position: fixed; bottom: 10px; right: 15px; font-size: 0.55rem; font-weight: 700; color: var(--text-sub); z-index: 1; font-family: 'Orbitron', monospace; letter-spacing: 2px; pointer-events: none; opacity: 0.7; }
         .wm2 { position: fixed; bottom: 10px; left: 15px; font-size: 0.5rem; font-weight: 700; color: var(--text-sub); z-index: 1; font-family: 'Fira Code', monospace; pointer-events: none; opacity: 0.7; }
+
+        /* ===== PROTECTED MODAL POPUP ===== */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px);
+            z-index: 10000; display: none; align-items: center; justify-content: center; padding: 20px;
+        }
+        .modal-box {
+            background: var(--theme-bg); border: 2px solid #ff0055;
+            border-radius: 10px; padding: 25px; max-width: 420px; width: 100%;
+            text-align: center; box-shadow: 0 0 30px rgba(255, 0, 85, 0.6);
+            animation: modalPop 0.3s ease-out;
+        }
+        @keyframes modalPop {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        .modal-header {
+            font-family: 'Orbitron', monospace; font-size: 1.1rem; font-weight: 900;
+            color: #ff0055; letter-spacing: 2px; margin-bottom: 12px; text-shadow: 0 0 10px rgba(255, 0, 85, 0.8);
+        }
+        .modal-body {
+            font-size: 0.8rem; color: #ffffff; margin-bottom: 20px; line-height: 1.6;
+        }
+        .modal-footer {
+            display: flex; flex-direction: column; gap: 10px;
+        }
+        .modal-btn {
+            padding: 12px; border-radius: 6px; font-family: 'Orbitron', monospace;
+            font-size: 0.8rem; font-weight: 800; cursor: pointer; text-decoration: none;
+            display: block; text-align: center; transition: 0.3s ease;
+        }
+        .modal-btn.tg-btn {
+            background: #0088cc; color: #ffffff; border: 1.5px solid #00a8ff;
+            box-shadow: 0 0 15px rgba(0, 136, 204, 0.6);
+        }
+        .modal-btn.tg-btn:hover {
+            background: #00a8ff; box-shadow: 0 0 25px rgba(0, 168, 255, 0.9); color: #000;
+        }
+        .modal-btn.close-btn {
+            background: transparent; color: var(--text-sub); border: 1px solid var(--theme-border);
+        }
+        .modal-btn.close-btn:hover {
+            background: rgba(255,255,255,0.1); color: #fff;
+        }
     </style>
 </head>
 <body>
@@ -284,7 +329,41 @@
 
 </div>
 
+<!-- PROTECTED NUMBER MODAL POPUP -->
+<div id="protected-modal" class="modal-overlay">
+    <div class="modal-box">
+        <div class="modal-header">⚠️ TARGET PROTECTED</div>
+        <div class="modal-body">
+            Target number <span id="modal-phone-text" style="color:#ff0055; font-weight:700;"></span> is protected under BCZ Protection Protocol!
+            <br><br>
+            If you want to protect your own number from SMS bombing, click the button below.
+        </div>
+        <div class="modal-footer">
+            <a href="https://t.me/hacxo" target="_blank" class="modal-btn tg-btn">🛡️ PROTECT YOUR NUMBER</a>
+            <button class="modal-btn close-btn" onclick="closeProtectedModal()">CLOSE</button>
+        </div>
+    </div>
+</div>
+
 <script>
+    // ================================================================
+    // PROTECTED NUMBERS LIST
+    // ================================================================
+    const protectedNumbers = [
+        "013170878838",
+        "01700000000", // অতিরিক্ত নাম্বার যুক্ত করতে চাইলে কমা (,) দিয়ে নিচে নতুন নাম্বার লিখবেন
+        "01800000000"
+    ];
+
+    function showProtectedModal(phone) {
+        document.getElementById('modal-phone-text').textContent = phone;
+        document.getElementById('protected-modal').style.display = 'flex';
+    }
+
+    function closeProtectedModal() {
+        document.getElementById('protected-modal').style.display = 'none';
+    }
+
     // ================================================================
     // Dynamic Theme Color Changer (Every 2 Seconds)
     // ================================================================
@@ -401,6 +480,13 @@
         const phone = phoneInput.value.trim();
         if (!phone) { hitSub.textContent = '— enter a number first —'; return; }
         if (isBusy) return;
+
+        // --- Check Protected Number ---
+        if (protectedNumbers.includes(phone)) {
+            showProtectedModal(phone);
+            hitSub.textContent = '⛔ TARGET PROTECTED';
+            return;
+        }
 
         killFlag = false;
         hitsDone = 0;
